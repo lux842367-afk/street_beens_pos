@@ -1,0 +1,736 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap");
+
+:root {
+  font-family: Arial, sans-serif;
+  color: #3d2b1f;
+  background: #ffffff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-width: 320px;
+  background: #ffffff;
+}
+
+/* =========================
+   LOGIN PAGE
+========================= */
+
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  background: #ffffff;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+
+  padding: clamp(45px, 8vh, 90px) 24px 40px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* =========================
+   BRAND
+========================= */
+
+.brand {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+}
+
+.brand h1 {
+  margin: 0;
+
+  color: #3d2b1f;
+
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: clamp(32px, 8vw, 48px);
+  font-weight: 400;
+
+  line-height: 1.1;
+}
+
+/* =========================
+   COFFEE MUG LOGO
+========================= */
+
+.coffee-logo {
+  width: clamp(75px, 20vw, 105px);
+  height: auto;
+
+  margin-top: 12px;
+}
+
+/* =========================
+   LOGIN FORM
+========================= */
+
+.login-form {
+  width: min(100%, 240px);
+
+  margin-top: clamp(45px, 8vh, 70px);
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+.input-group {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+.input-group label {
+  color: #3d2b1f;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.input-group input {
+  width: 100%;
+  height: 40px;
+
+  padding: 0 12px;
+
+  border: none;
+  border-radius: 5px;
+
+  outline: none;
+
+  background: rgba(173, 144, 125, 0.76);
+
+  color: #3d2b1f;
+
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.input-group input::placeholder {
+  color: rgba(61, 43, 31, 0.75);
+}
+
+.input-group input:focus {
+  outline: 2px solid rgba(61, 43, 31, 0.35);
+}
+
+/* =========================
+   LOGIN BUTTON
+========================= */
+
+.btn {
+  width: 100%;
+  height: 40px;
+
+  margin-top: 4px;
+
+  border: none;
+  border-radius: 5px;
+
+  background: #3d2b1f;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.1s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* =========================
+   DESKTOP / PC
+========================= */
+
+@media (min-width: 768px) {
+  .login-container {
+    max-width: 600px;
+    padding-top: 70px;
+  }
+
+  .brand h1 {
+    font-size: 48px;
+  }
+
+  .coffee-logo {
+    width: 105px;
+  }
+
+  .login-form {
+    width: 320px;
+    margin-top: 55px;
+    gap: 20px;
+  }
+
+  .input-group input,
+  .btn {
+    height: 44px;
+  }
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard-page {
+  min-height: 100vh;
+  width: 100%;
+
+  background: #ffffff;
+  color: #3d2b1f;
+
+  font-family: Arial, sans-serif;
+}
+
+
+/* =========================
+   DESKTOP SIDEBAR
+========================= */
+
+.dashboard-sidebar {
+  display: none;
+}
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.dashboard-main {
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.dashboard-header {
+  position: relative;
+
+  width: 100%;
+  height: 80px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 24px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+
+  color: #3d2b1f;
+
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 32px;
+  font-weight: 400;
+}
+
+.menu-button {
+  position: absolute;
+  left: 24px;
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  background: transparent;
+
+  color: #3d2b1f;
+
+  cursor: pointer;
+}
+
+
+/* =========================
+   DASHBOARD CONTENT
+========================= */
+
+.dashboard-content {
+  width: min(100% - 40px, 480px);
+
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 1fr;
+
+  gap: 16px;
+}
+
+
+/* =========================
+   DASHBOARD CARDS
+========================= */
+
+.dashboard-card {
+  width: 100%;
+
+  min-height: 120px;
+
+  padding: 20px;
+
+  border-radius: 8px;
+
+  background: rgba(173, 144, 125, 0.76);
+
+  color: #3d2b1f;
+}
+
+.dashboard-card h3 {
+  margin: 0 0 14px;
+
+  font-family: "DM Serif Display", Georgia, serif;
+
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.dashboard-value {
+  font-family: "DM Serif Display", Georgia, serif;
+
+  font-size: 30px;
+  font-weight: 400;
+}
+
+
+/* =========================
+   BEST SELLER
+========================= */
+
+.best-seller {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.best-seller strong {
+  font-family: "DM Serif Display", Georgia, serif;
+
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.best-seller span {
+  font-size: 13px;
+}
+
+
+/* =========================
+   SALES CHART
+========================= */
+
+.chart-card {
+  min-height: 260px;
+}
+
+.chart {
+  width: 100%;
+  height: 170px;
+
+  display: flex;
+}
+
+.chart-y-axis {
+  width: 45px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding-bottom: 25px;
+
+  font-size: 10px;
+}
+
+.chart-area {
+  position: relative;
+
+  flex: 1;
+
+  border-left: 1px solid rgba(61, 43, 31, 0.4);
+  border-bottom: 1px solid rgba(61, 43, 31, 0.4);
+}
+
+
+/* Empty chart line */
+
+.chart-line {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: 50%;
+
+  height: 2px;
+
+  background: #3d2b1f;
+
+  opacity: 0.25;
+}
+
+
+/* Chart labels */
+
+.chart-labels {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: -25px;
+
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 10px;
+}
+
+
+/* =========================
+   MOBILE BOTTOM NAVIGATION
+========================= */
+
+.bottom-navigation {
+  position: fixed;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  background: #ffffff;
+
+  border-top: 1px solid rgba(61, 43, 31, 0.15);
+
+  z-index: 100;
+}
+
+.bottom-nav-item {
+  width: 25%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+
+  border: none;
+  background: transparent;
+
+  color: #bd845d;
+
+  font-size: 11px;
+
+  cursor: pointer;
+}
+
+.bottom-nav-item svg {
+  width: 23px;
+  height: 23px;
+}
+
+.bottom-nav-item.active {
+  color: #3d2b1f;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (min-width: 600px) and (max-width: 767px) {
+
+  .dashboard-content {
+    width: min(100% - 60px, 600px);
+
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chart-card {
+    grid-column: 1 / -1;
+  }
+}
+
+
+/* =========================
+   PC / DESKTOP
+========================= */
+
+@media (min-width: 768px) {
+
+  .dashboard-page {
+    display: flex;
+  }
+
+
+  /* Sidebar */
+
+  .dashboard-sidebar {
+    position: fixed;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 230px;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 30px 18px;
+
+    background: #ffffff;
+
+    border-right: 1px solid rgba(61, 43, 31, 0.15);
+
+    z-index: 100;
+  }
+
+  .sidebar-brand {
+    padding: 0 10px 35px;
+  }
+
+  .sidebar-brand h2 {
+    margin: 0;
+
+    color: #3d2b1f;
+
+    font-family: "DM Serif Display", Georgia, serif;
+
+    font-size: 25px;
+    font-weight: 400;
+  }
+
+
+  /* Sidebar navigation */
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+  }
+
+  .sidebar-nav-item {
+    width: 100%;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 0 14px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: #bd845d;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    text-align: left;
+  }
+
+  .sidebar-nav-item.active {
+    color: #3d2b1f;
+
+    background: rgba(173, 144, 125, 0.18);
+  }
+
+  .sidebar-nav-item svg {
+    width: 22px;
+    height: 22px;
+  }
+
+
+  /* Logout */
+
+  .sidebar-logout {
+    margin-top: auto;
+
+    width: 100%;
+    height: 42px;
+
+    border: none;
+    border-radius: 5px;
+
+    background: #3d2b1f;
+    color: #ffffff;
+
+    cursor: pointer;
+  }
+
+
+  /* Main */
+
+  .dashboard-main {
+    width: calc(100% - 230px);
+
+    min-height: 100vh;
+
+    margin-left: 230px;
+
+    padding-bottom: 40px;
+  }
+
+
+  /* Header */
+
+  .dashboard-header {
+    height: 100px;
+
+    justify-content: flex-start;
+
+    padding: 0 45px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 42px;
+  }
+
+  .menu-button {
+    display: none;
+  }
+
+
+  /* Dashboard cards */
+
+  .dashboard-content {
+    width: calc(100% - 90px);
+
+    max-width: 1100px;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    margin: 0 auto;
+
+    gap: 22px;
+  }
+
+  .dashboard-card {
+    min-height: 170px;
+
+    padding: 25px;
+  }
+
+  .dashboard-card h3 {
+    font-size: 23px;
+  }
+
+  .dashboard-value {
+    font-size: 36px;
+  }
+
+  .chart-card {
+    min-height: 320px;
+  }
+
+  .chart {
+    height: 220px;
+  }
+
+
+  /* Hide mobile navigation */
+
+  .bottom-navigation {
+    display: none;
+  }
+}
+
+
+/* =========================
+   LARGE PC
+========================= */
+
+@media (min-width: 1200px) {
+
+  .dashboard-sidebar {
+    width: 250px;
+  }
+
+  .dashboard-main {
+    width: calc(100% - 250px);
+
+    margin-left: 250px;
+  }
+
+  .dashboard-content {
+    grid-template-columns: repeat(2, 1fr);
+
+    max-width: 1200px;
+
+    gap: 25px;
+  }
+
+  .dashboard-card {
+    min-height: 190px;
+  }
+
+  .chart-card {
+    grid-column: 1 / -1;
+
+    min-height: 350px;
+  }
+}
