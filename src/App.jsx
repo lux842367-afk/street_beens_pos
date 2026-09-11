@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
+import Pos from "./pages/pos";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("login");
@@ -17,7 +18,10 @@ function App() {
     return <Dashboard onNavigate={handleNavigation} />;
   }
 
-  // Temporary fallback for pages we haven't built yet
+  if (currentPage === "pos") {
+    return <Pos onNavigate={handleNavigation} />;
+  }
+
   return (
     <div>
       <h1>Page Under Development</h1>
