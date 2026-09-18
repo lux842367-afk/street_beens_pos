@@ -60,7 +60,7 @@ function CartIcon() {
   );
 }
 
-function ArchiveIcon() {
+function ProductsIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
       <path
@@ -113,19 +113,12 @@ function StatsIcon() {
 function Dashboard({ onNavigate }) {
   return (
     <div className="dashboard-page">
-
-      {/* =========================
-          DESKTOP SIDEBAR
-      ========================= */}
-
       <aside className="dashboard-sidebar">
-
         <div className="sidebar-brand">
           <h2>Street Beans Café</h2>
         </div>
 
         <nav className="sidebar-nav">
-
           <button
             className="sidebar-nav-item active"
             onClick={() => onNavigate("dashboard")}
@@ -144,10 +137,10 @@ function Dashboard({ onNavigate }) {
 
           <button
             className="sidebar-nav-item"
-            onClick={() => onNavigate("transactions")}
+            onClick={() => onNavigate("products")}
           >
-            <ArchiveIcon />
-            <span>Transactions</span>
+            <ProductsIcon />
+            <span>Products</span>
           </button>
 
           <button
@@ -157,7 +150,6 @@ function Dashboard({ onNavigate }) {
             <StatsIcon />
             <span>Reports</span>
           </button>
-
         </nav>
 
         <button
@@ -166,57 +158,31 @@ function Dashboard({ onNavigate }) {
         >
           Log Out
         </button>
-
       </aside>
 
-
-      {/* =========================
-          MAIN CONTENT
-      ========================= */}
-
       <main className="dashboard-main">
-
         <header className="dashboard-header">
-
-          <button
-            className="menu-button"
-            aria-label="Open menu"
-          >
+          <button className="menu-button" aria-label="Open menu">
             <MenuIcon />
           </button>
 
           <h1>Dashboard</h1>
-
         </header>
 
-
         <section className="dashboard-content">
-
-          {/* TODAY'S SALES */}
-
           <Card
             title="Today's Sales"
             className="dashboard-card sales-card"
           >
-            <div className="dashboard-value">
-              ₱0.00
-            </div>
+            <div className="dashboard-value">₱0.00</div>
           </Card>
-
-
-          {/* TOTAL TRANSACTIONS */}
 
           <Card
             title="Total Transactions"
             className="dashboard-card"
           >
-            <div className="dashboard-value">
-              0
-            </div>
+            <div className="dashboard-value">0</div>
           </Card>
-
-
-          {/* BEST SELLER */}
 
           <Card
             title="Best Seller"
@@ -228,15 +194,11 @@ function Dashboard({ onNavigate }) {
             </div>
           </Card>
 
-
-          {/* SALES CHART */}
-
           <Card
             title="Sales Chart"
             className="dashboard-card chart-card"
           >
             <div className="chart">
-
               <div className="chart-y-axis">
                 <span>₱500</span>
                 <span>₱400</span>
@@ -247,7 +209,6 @@ function Dashboard({ onNavigate }) {
               </div>
 
               <div className="chart-area">
-
                 <div className="chart-line"></div>
 
                 <div className="chart-labels">
@@ -259,23 +220,13 @@ function Dashboard({ onNavigate }) {
                   <span>Sat</span>
                   <span>Sun</span>
                 </div>
-
               </div>
-
             </div>
           </Card>
-
         </section>
-
       </main>
 
-
-      {/* =========================
-          MOBILE BOTTOM NAVIGATION
-      ========================= */}
-
       <nav className="bottom-navigation">
-
         <button
           className="bottom-nav-item active"
           onClick={() => onNavigate("dashboard")}
@@ -294,10 +245,10 @@ function Dashboard({ onNavigate }) {
 
         <button
           className="bottom-nav-item"
-          onClick={() => onNavigate("transactions")}
+          onClick={() => onNavigate("products")}
         >
-          <ArchiveIcon />
-          <span>Archive</span>
+          <ProductsIcon />
+          <span>Products</span>
         </button>
 
         <button
@@ -305,11 +256,9 @@ function Dashboard({ onNavigate }) {
           onClick={() => onNavigate("reports")}
         >
           <StatsIcon />
-          <span>Stats</span>
+          <span>Reports</span>
         </button>
-
       </nav>
-
     </div>
   );
 }

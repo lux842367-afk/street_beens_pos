@@ -2,6 +2,8 @@ import { useState } from "react";
 import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
 import Pos from "./pages/pos";
+import Products from "./pages/products";
+import Reports from "./pages/reports";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("login");
@@ -20,6 +22,14 @@ function App() {
 
   if (currentPage === "pos") {
     return <Pos onNavigate={handleNavigation} />;
+  }
+
+  if (currentPage === "products") {
+    return <Products onNavigate={handleNavigation} />;
+  }
+
+  if (currentPage === "reports") {
+    return <Reports onNavigate={handleNavigation} />;
   }
 
   return (

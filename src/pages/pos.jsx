@@ -52,7 +52,7 @@ function CartIcon() {
   );
 }
 
-function ArchiveIcon() {
+function ProductsIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
       <path
@@ -170,10 +170,10 @@ function Pos({ onNavigate }) {
 
           <button
             className="sidebar-nav-item"
-            onClick={() => onNavigate("transactions")}
+            onClick={() => onNavigate("products")}
           >
-            <ArchiveIcon />
-            <span>Transactions</span>
+            <ProductsIcon />
+            <span>Products</span>
           </button>
 
           <button
@@ -312,10 +312,10 @@ function Pos({ onNavigate }) {
 
         <button
           className="bottom-nav-item"
-          onClick={() => onNavigate("transactions")}
+          onClick={() => onNavigate("products")}
         >
-          <ArchiveIcon />
-          <span>Archive</span>
+          <ProductsIcon />
+          <span>Products</span>
         </button>
 
         <button
@@ -323,7 +323,7 @@ function Pos({ onNavigate }) {
           onClick={() => onNavigate("reports")}
         >
           <StatsIcon />
-          <span>Stats</span>
+          <span>Reports</span>
         </button>
       </nav>
 
