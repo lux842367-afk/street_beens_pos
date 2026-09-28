@@ -4,6 +4,7 @@ import Dashboard from "./pages/dashboard";
 import Pos from "./pages/pos";
 import Products from "./pages/products";
 import Reports from "./pages/reports";
+import Transactions from "./pages/transactions";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("login");
@@ -30,6 +31,10 @@ function App() {
 
   if (currentPage === "reports") {
     return <Reports onNavigate={handleNavigation} />;
+  }
+
+  if (currentPage === "transactions") {
+    return <Transactions onNavigate={handleNavigation} />;
   }
 
   return (

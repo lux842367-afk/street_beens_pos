@@ -182,6 +182,13 @@ function Dashboard({ onNavigate }) {
             className="dashboard-card"
           >
             <div className="dashboard-value">0</div>
+
+            <button
+              className="btn"
+              onClick={() => onNavigate("transactions")}
+            >
+              View Transaction History
+            </button>
           </Card>
 
           <Card

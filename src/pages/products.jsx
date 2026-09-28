@@ -1,18 +1,18 @@
-const products = {
+import { useState } from "react";
+
+const initialProducts = {
   "Iced Coffee": [
     { name: "Black Americano", price: 90 },
     { name: "Cappuccino", price: 90 },
     { name: "Caramel Macchiato", price: 90 },
     { name: "Mocha Caramel", price: 90 },
   ],
-
   "Non Coffee": [
     { name: "Milky Oreo", price: 90 },
     { name: "Strawberry Oreo", price: 90 },
     { name: "Cookies and Cream", price: 90 },
     { name: "White Caramel", price: 90 },
   ],
-
   "Fruity Soda": [
     { name: "Blue Berry", price: 90 },
     { name: "Green Apple", price: 90 },
@@ -100,30 +100,100 @@ function StatsIcon() {
   );
 }
 
-function EditIcon() {
-  return (
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M4 20H8L19 9C20.1 7.9 20.1 6.1 19 5C17.9 3.9 16.1 3.9 15 5L4 16V20Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M13 7L17 11"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
 function Products({ onNavigate }) {
+  const [products, setProducts] = useState(initialProducts);
+
+  const [showAddProduct, setShowAddProduct] = useState(false);
+
+  const [productName, setProductName] = useState("");
+  const [productPrice, setProductPrice] = useState("");
+  const [productCategory, setProductCategory] = useState("Iced Coffee");
+
+  const [editingProduct, setEditingProduct] = useState(null);
+
+  const categories = ["Iced Coffee", "Non Coffee", "Fruity Soda"];
+
+  const handleAddProduct = (event) => {
+    event.preventDefault();
+
+    if (!productName.trim() || !productPrice) {
+      return;
+    }
+
+    const newProduct = {
+      name: productName.trim(),
+      price: Number(productPrice),
+    };
+
+    setProducts((current) => ({
+      ...current,
+      [productCategory]: [...current[productCategory], newProduct],
+    }));
+
+    setProductName("");
+    setProductPrice("");
+    setProductCategory("Iced Coffee");
+    setShowAddProduct(false);
+  };
+
+  const handleCancelAdd = () => {
+    setProductName("");
+    setProductPrice("");
+    setProductCategory("Iced Coffee");
+    setShowAddProduct(false);
+  };
+
+  const handleOpenEdit = (product, category) => {
+    setEditingProduct({
+      originalName: product.name,
+      originalCategory: category,
+      name: product.name,
+      price: product.price,
+      category: category,
+    });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingProduct(null);
+  };
+
+  const handleSaveEdit = (event) => {
+    event.preventDefault();
+
+    if (!editingProduct.name.trim() || !editingProduct.price) {
+      return;
+    }
+
+    const updatedProduct = {
+      name: editingProduct.name.trim(),
+      price: Number(editingProduct.price),
+    };
+
+    setProducts((current) => {
+      const updated = { ...current };
+
+      updated[editingProduct.originalCategory] = updated[
+        editingProduct.originalCategory
+      ].filter(
+        (product) => product.name !== editingProduct.originalName
+      );
+
+      updated[editingProduct.category] = [
+        ...updated[editingProduct.category],
+        updatedProduct,
+      ];
+
+      return updated;
+    });
+
+    setEditingProduct(null);
+  };
+
   return (
     <div className="products-page">
-      <aside className="products-sidebar">
+
+      {/* DESKTOP SIDEBAR */}
+      <aside className="dashboard-sidebar">
         <div className="sidebar-brand">
           <h2>Street Beans Café</h2>
         </div>
@@ -167,6 +237,7 @@ function Products({ onNavigate }) {
         </button>
       </aside>
 
+      {/* MAIN CONTENT */}
       <main className="products-main">
         <header className="products-header">
           <button
@@ -180,12 +251,12 @@ function Products({ onNavigate }) {
         </header>
 
         <section className="products-content">
-          {Object.entries(products).map(([category, categoryProducts]) => (
+          {categories.map((category) => (
             <section className="product-category" key={category}>
               <h2>{category}</h2>
 
               <div className="product-list">
-                {categoryProducts.map((product) => (
+                {products[category].map((product) => (
                   <div className="product-card" key={product.name}>
                     <div className="product-information">
                       <h3>{product.name}</h3>
@@ -195,23 +266,28 @@ function Products({ onNavigate }) {
 
                     <button
                       className="edit-product-button"
-                      aria-label={`Edit ${product.name}`}
+                      onClick={() => handleOpenEdit(product, category)}
                     >
-                      <EditIcon />
+                      ✎
                     </button>
                   </div>
                 ))}
               </div>
             </section>
           ))}
-
-          <button className="add-product-button">
-            <span>+</span>
-            Add Product
-          </button>
         </section>
+
+        {/* ADD PRODUCT BUTTON */}
+        <button
+          className="add-product-button"
+          onClick={() => setShowAddProduct(true)}
+        >
+          <span>+</span>
+          Add Product
+        </button>
       </main>
 
+      {/* MOBILE BOTTOM NAVIGATION */}
       <nav className="bottom-navigation">
         <button
           className="bottom-nav-item"
@@ -242,6 +318,157 @@ function Products({ onNavigate }) {
           <span>Reports</span>
         </button>
       </nav>
+
+      {/* ADD PRODUCT FRAME */}
+      {showAddProduct && (
+        <div className="add-product-overlay">
+          <div className="add-product-modal">
+            <h2>Add Product</h2>
+
+            <form onSubmit={handleAddProduct}>
+              <div className="add-product-field">
+                <label>Product Name</label>
+
+                <input
+                  type="text"
+                  placeholder="Enter product name"
+                  value={productName}
+                  onChange={(event) =>
+                    setProductName(event.target.value)
+                  }
+                />
+              </div>
+
+              <div className="add-product-field">
+                <label>Price</label>
+
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="Enter price"
+                  value={productPrice}
+                  onChange={(event) =>
+                    setProductPrice(event.target.value)
+                  }
+                />
+              </div>
+
+              <div className="add-product-field">
+                <label>Category</label>
+
+                <select
+                  value={productCategory}
+                  onChange={(event) =>
+                    setProductCategory(event.target.value)
+                  }
+                >
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="add-product-actions">
+                <button
+                  type="button"
+                  className="cancel-product-button"
+                  onClick={handleCancelAdd}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  className="save-product-button"
+                >
+                  Add Product
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* EDIT PRODUCT FRAME */}
+      {editingProduct && (
+        <div className="add-product-overlay">
+          <div className="add-product-modal">
+            <h2>Edit Product</h2>
+
+            <form onSubmit={handleSaveEdit}>
+              <div className="add-product-field">
+                <label>Product Name</label>
+
+                <input
+                  type="text"
+                  value={editingProduct.name}
+                  onChange={(event) =>
+                    setEditingProduct((current) => ({
+                      ...current,
+                      name: event.target.value,
+                    }))
+                  }
+                />
+              </div>
+
+              <div className="add-product-field">
+                <label>Price</label>
+
+                <input
+                  type="number"
+                  min="0"
+                  value={editingProduct.price}
+                  onChange={(event) =>
+                    setEditingProduct((current) => ({
+                      ...current,
+                      price: event.target.value,
+                    }))
+                  }
+                />
+              </div>
+
+              <div className="add-product-field">
+                <label>Category</label>
+
+                <select
+                  value={editingProduct.category}
+                  onChange={(event) =>
+                    setEditingProduct((current) => ({
+                      ...current,
+                      category: event.target.value,
+                    }))
+                  }
+                >
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="add-product-actions">
+                <button
+                  type="button"
+                  className="cancel-product-button"
+                  onClick={handleCancelEdit}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  className="save-product-button"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
