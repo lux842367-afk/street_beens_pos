@@ -1510,3 +1510,43 @@ body {
     left: 274px;
   }
 }
+
+.product-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.delete-product-button {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 5px;
+  background: #3d2b1f;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.delete-product-button:hover {
+  background: #bd845d;
+}
+
+.delete-confirmation-modal {
+  text-align: center;
+}
+
+.delete-confirmation-text {
+  margin: -8px 0 24px;
+  color: rgba(61, 43, 31, 0.8);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.delete-confirmation-modal .add-product-actions {
+  justify-content: center;
+}

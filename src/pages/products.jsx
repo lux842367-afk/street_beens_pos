@@ -100,6 +100,44 @@ function StatsIcon() {
   );
 }
 
+function DeleteIcon() {
+  return (
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M4 7H20"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M9 7V4H15V7"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6 7L7 20H17L18 7"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10 11V16"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M14 11V16"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 function Products({ onNavigate }) {
   const [products, setProducts] = useState(initialProducts);
 
@@ -110,6 +148,8 @@ function Products({ onNavigate }) {
   const [productCategory, setProductCategory] = useState("Iced Coffee");
 
   const [editingProduct, setEditingProduct] = useState(null);
+
+  const [deletingProduct, setDeletingProduct] = useState(null);
 
   const categories = ["Iced Coffee", "Non Coffee", "Fruity Soda"];
 
@@ -189,6 +229,37 @@ function Products({ onNavigate }) {
     setEditingProduct(null);
   };
 
+  const handleOpenDelete = (product, category) => {
+    setDeletingProduct({
+      name: product.name,
+      category: category,
+    });
+  };
+
+  const handleCancelDelete = () => {
+    setDeletingProduct(null);
+  };
+
+  const handleDeleteProduct = () => {
+    if (!deletingProduct) {
+      return;
+    }
+
+    setProducts((current) => {
+      const updated = { ...current };
+
+      updated[deletingProduct.category] = updated[
+        deletingProduct.category
+      ].filter(
+        (product) => product.name !== deletingProduct.name
+      );
+
+      return updated;
+    });
+
+    setDeletingProduct(null);
+  };
+
   return (
     <div className="products-page">
 
@@ -264,12 +335,27 @@ function Products({ onNavigate }) {
                       <strong>₱{product.price}</strong>
                     </div>
 
-                    <button
-                      className="edit-product-button"
-                      onClick={() => handleOpenEdit(product, category)}
-                    >
-                      ✎
-                    </button>
+                    <div className="product-actions">
+                      <button
+                        className="edit-product-button"
+                        onClick={() =>
+                          handleOpenEdit(product, category)
+                        }
+                        aria-label={`Edit ${product.name}`}
+                      >
+                        ✎
+                      </button>
+
+                      <button
+                        className="delete-product-button"
+                        onClick={() =>
+                          handleOpenDelete(product, category)
+                        }
+                        aria-label={`Delete ${product.name}`}
+                      >
+                        <DeleteIcon />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -466,6 +552,38 @@ function Products({ onNavigate }) {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* DELETE CONFIRMATION FRAME */}
+      {deletingProduct && (
+        <div className="add-product-overlay">
+          <div className="add-product-modal delete-confirmation-modal">
+            <h2>Are you sure?</h2>
+
+            <p className="delete-confirmation-text">
+              Are you sure you want to delete{" "}
+              <strong>{deletingProduct.name}</strong>?
+            </p>
+
+            <div className="add-product-actions">
+              <button
+                type="button"
+                className="cancel-product-button"
+                onClick={handleCancelDelete}
+              >
+                No
+              </button>
+
+              <button
+                type="button"
+                className="save-product-button"
+                onClick={handleDeleteProduct}
+              >
+                Yes, Delete
+              </button>
+            </div>
           </div>
         </div>
       )}
