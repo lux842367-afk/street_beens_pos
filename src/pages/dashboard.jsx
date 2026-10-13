@@ -1,32 +1,25 @@
 import Card from "../components/card";
 
+const weeklySales = [
+  { day: "Mon", sales: 320 },
+  { day: "Tue", sales: 450 },
+  { day: "Wed", sales: 280 },
+  { day: "Thu", sales: 390 },
+  { day: "Fri", sales: 500 },
+  { day: "Sat", sales: 420 },
+  { day: "Sun", sales: 360 },
+];
+
+const recentSales = [
+  { name: "Caramel Macchiato", quantity: 18, sales: 1620 },
+  { name: "Black Americano", quantity: 15, sales: 1350 },
+  { name: "Cookies and Cream", quantity: 12, sales: 1080 },
+];
+
 function MenuIcon() {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4 6H20"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M4 12H20"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M4 18H20"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
@@ -34,12 +27,7 @@ function MenuIcon() {
 function HomeIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M3 10.5L12 3L21 10.5V20H14V14H10V20H3V10.5Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
+      <path d="M3 10.5L12 3L21 10.5V20H14V14H10V20H3V10.5Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -47,13 +35,7 @@ function HomeIcon() {
 function CartIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M4 5H6L8 17H19L21 8H7"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M4 5H6L8 17H19L21 8H7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       <circle cx="10" cy="20" r="1.5" fill="currentColor" />
       <circle cx="17" cy="20" r="1.5" fill="currentColor" />
     </svg>
@@ -63,24 +45,9 @@ function CartIcon() {
 function ProductsIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M4 7H20V20H4V7Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M3 4H21V7H3V4Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M9 12H15"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <path d="M4 7H20V20H4V7Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M3 4H21V7H3V4Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M9 12H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
@@ -88,29 +55,112 @@ function ProductsIcon() {
 function StatsIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M5 20V12"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M12 20V6"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M19 20V3"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <path d="M5 20V12M12 20V6M19 20V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
 
+function SalesChart() {
+  const maxSales = 500;
+  const chartWidth = 700;
+  const chartHeight = 210;
+  const leftPadding = 10;
+  const rightPadding = 10;
+  const topPadding = 12;
+  const bottomPadding = 25;
+  const usableWidth = chartWidth - leftPadding - rightPadding;
+  const usableHeight = chartHeight - topPadding - bottomPadding;
+
+  const points = weeklySales.map((item, index) => {
+    const x =
+      leftPadding +
+      (index / (weeklySales.length - 1)) * usableWidth;
+    const y =
+      topPadding +
+      (1 - item.sales / maxSales) * usableHeight;
+
+    return { ...item, x, y };
+  });
+
+  const linePoints = points
+    .map((point) => `${point.x},${point.y}`)
+    .join(" ");
+
+  const areaPoints = [
+    `${points[0].x},${chartHeight - bottomPadding}`,
+    ...points.map((point) => `${point.x},${point.y}`),
+    `${points[points.length - 1].x},${chartHeight - bottomPadding}`,
+  ].join(" ");
+
+  return (
+    <div className="analytics-chart">
+      <div className="chart-scale">
+        {[500, 400, 300, 200, 100, 0].map((amount) => (
+          <span key={amount}>₱{amount}</span>
+        ))}
+      </div>
+
+      <div className="chart-plot">
+        <svg
+          className="sales-chart-svg"
+          viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+          preserveAspectRatio="none"
+          role="img"
+          aria-label="Sample weekly sales chart in pesos"
+        >
+          {[0, 1, 2, 3, 4, 5].map((line) => {
+            const y =
+              topPadding + (line / 5) * usableHeight;
+
+            return (
+              <line
+                key={line}
+                x1={leftPadding}
+                y1={y}
+                x2={chartWidth - rightPadding}
+                y2={y}
+                className="chart-grid-line"
+              />
+            );
+          })}
+
+          <polygon points={areaPoints} className="chart-area-fill" />
+
+          <polyline
+            points={linePoints}
+            className="chart-data-line"
+          />
+
+          {points.map((point) => (
+            <circle
+              key={point.day}
+              cx={point.x}
+              cy={point.y}
+              r="4"
+              className="chart-data-point"
+            />
+          ))}
+        </svg>
+
+        <div className="chart-labels">
+          {weeklySales.map((item) => (
+            <span key={item.day}>{item.day}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Dashboard({ onNavigate }) {
+  const todaySales = 2480;
+  const previousDaySales = 2150;
+  const transactionCount = 32;
+  const averageOrder = todaySales / transactionCount;
+  const salesChange = Math.round(
+    ((todaySales - previousDaySales) / previousDaySales) * 100
+  );
+
   return (
     <div className="dashboard-page">
       <aside className="dashboard-sidebar">
@@ -162,29 +212,43 @@ function Dashboard({ onNavigate }) {
 
       <main className="dashboard-main">
         <header className="dashboard-header">
-          <button className="menu-button" aria-label="Open menu">
+          <button className="menu-button" aria-label="Menu">
             <MenuIcon />
           </button>
-
           <h1>Dashboard</h1>
         </header>
 
         <section className="dashboard-content">
           <Card
             title="Today's Sales"
-            className="dashboard-card sales-card"
+            className="dashboard-card analytics-card"
           >
-            <div className="dashboard-value">₱0.00</div>
+            <div className="dashboard-value">
+              ₱{todaySales.toLocaleString("en-PH", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </div>
+            <p className="analytics-note">
+              <span className="analytics-positive">
+                +{salesChange}%
+              </span>
+              {" "}compared with the previous day
+            </p>
           </Card>
 
           <Card
             title="Total Transactions"
-            className="dashboard-card"
+            className="dashboard-card analytics-card"
           >
-            <div className="dashboard-value">0</div>
-
+            <div className="dashboard-value">
+              {transactionCount}
+            </div>
+            <p className="analytics-note">
+              Average order: ₱{averageOrder.toFixed(2)}
+            </p>
             <button
-              className="btn"
+              className="btn dashboard-history-button"
               onClick={() => onNavigate("transactions")}
             >
               View Transaction History
@@ -193,41 +257,84 @@ function Dashboard({ onNavigate }) {
 
           <Card
             title="Best Seller"
-            className="dashboard-card"
+            className="dashboard-card analytics-card"
           >
             <div className="best-seller">
-              <strong>No sales yet</strong>
-              <span>0 items sold</span>
+              <strong>Caramel Macchiato</strong>
+              <span>18 items sold today</span>
+            </div>
+            <p className="analytics-note">
+              Top-selling drink in this sample dataset
+            </p>
+          </Card>
+
+          <Card
+            title="Weekly Sales"
+            className="dashboard-card chart-card"
+          >
+            <div className="chart-summary">
+              <div>
+                <span className="chart-summary-label">
+                  Total for the week
+                </span>
+                <strong>
+                  ₱{weeklySales
+                    .reduce((total, item) => total + item.sales, 0)
+                    .toLocaleString("en-PH", {
+                      minimumFractionDigits: 2,
+                    })}
+                </strong>
+              </div>
+              <span className="demo-data-label">Sample data</span>
+            </div>
+
+            <SalesChart />
+          </Card>
+
+          <Card
+            title="Top-Selling Products"
+            className="dashboard-card top-products-card"
+          >
+            <div className="top-products-list">
+              {recentSales.map((product, index) => (
+                <div className="top-product-row" key={product.name}>
+                  <div className="top-product-rank">
+                    {index + 1}
+                  </div>
+                  <div className="top-product-info">
+                    <strong>{product.name}</strong>
+                    <span>{product.quantity} items sold</span>
+                  </div>
+                  <strong className="top-product-sales">
+                    ₱{product.sales.toLocaleString("en-PH")}
+                  </strong>
+                </div>
+              ))}
             </div>
           </Card>
 
           <Card
-            title="Sales Chart"
-            className="dashboard-card chart-card"
+            title="Sales Overview"
+            className="dashboard-card overview-card"
           >
-            <div className="chart">
-              <div className="chart-y-axis">
-                <span>₱500</span>
-                <span>₱400</span>
-                <span>₱300</span>
-                <span>₱200</span>
-                <span>₱100</span>
-                <span>₱0</span>
-              </div>
-
-              <div className="chart-area">
-                <div className="chart-line"></div>
-
-                <div className="chart-labels">
-                  <span>Mon</span>
-                  <span>Tue</span>
-                  <span>Wed</span>
-                  <span>Thu</span>
-                  <span>Fri</span>
-                  <span>Sat</span>
-                  <span>Sun</span>
-                </div>
-              </div>
+            <div className="overview-row">
+              <span>Weekly transactions</span>
+              <strong>186</strong>
+            </div>
+            <div className="overview-row">
+              <span>Average daily sales</span>
+              <strong>
+                ₱{(
+                  weeklySales.reduce(
+                    (total, item) => total + item.sales,
+                    0
+                  ) / weeklySales.length
+                ).toFixed(2)}
+              </strong>
+            </div>
+            <div className="overview-row">
+              <span>Highest sales day</span>
+              <strong>Friday</strong>
             </div>
           </Card>
         </section>
