@@ -1,4 +1,6 @@
+
 import Card from "../components/card";
+import Sidebar from "../components/Sidebar";
 
 const weeklySales = [
   { day: "Mon", sales: 320 },
@@ -19,43 +21,12 @@ const recentSales = [
 function MenuIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function HomeIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M3 10.5L12 3L21 10.5V20H14V14H10V20H3V10.5Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function CartIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M4 5H6L8 17H19L21 8H7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="10" cy="20" r="1.5" fill="currentColor" />
-      <circle cx="17" cy="20" r="1.5" fill="currentColor" />
-    </svg>
-  );
-}
-
-function ProductsIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M4 7H20V20H4V7Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-      <path d="M3 4H21V7H3V4Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-      <path d="M9 12H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function StatsIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M5 20V12M12 20V6M19 20V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path
+        d="M4 6H20M4 12H20M4 18H20"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -76,8 +47,7 @@ function SalesChart() {
       leftPadding +
       (index / (weeklySales.length - 1)) * usableWidth;
     const y =
-      topPadding +
-      (1 - item.sales / maxSales) * usableHeight;
+      topPadding + (1 - item.sales / maxSales) * usableHeight;
 
     return { ...item, x, y };
   });
@@ -124,7 +94,10 @@ function SalesChart() {
             );
           })}
 
-          <polygon points={areaPoints} className="chart-area-fill" />
+          <polygon
+            points={areaPoints}
+            className="chart-area-fill"
+          />
 
           <polyline
             points={linePoints}
@@ -152,63 +125,23 @@ function SalesChart() {
   );
 }
 
-function Dashboard({ onNavigate }) {
+function Dashboard({ onNavigate, currentUser }) {
   const todaySales = 2480;
   const previousDaySales = 2150;
   const transactionCount = 32;
   const averageOrder = todaySales / transactionCount;
+
   const salesChange = Math.round(
     ((todaySales - previousDaySales) / previousDaySales) * 100
   );
 
   return (
     <div className="dashboard-page">
-      <aside className="dashboard-sidebar">
-        <div className="sidebar-brand">
-          <h2>Street Beans Café</h2>
-        </div>
-
-        <nav className="sidebar-nav">
-          <button
-            className="sidebar-nav-item active"
-            onClick={() => onNavigate("dashboard")}
-          >
-            <HomeIcon />
-            <span>Home</span>
-          </button>
-
-          <button
-            className="sidebar-nav-item"
-            onClick={() => onNavigate("pos")}
-          >
-            <CartIcon />
-            <span>POS</span>
-          </button>
-
-          <button
-            className="sidebar-nav-item"
-            onClick={() => onNavigate("products")}
-          >
-            <ProductsIcon />
-            <span>Products</span>
-          </button>
-
-          <button
-            className="sidebar-nav-item"
-            onClick={() => onNavigate("reports")}
-          >
-            <StatsIcon />
-            <span>Reports</span>
-          </button>
-        </nav>
-
-        <button
-          className="sidebar-logout"
-          onClick={() => onNavigate("login")}
-        >
-          Log Out
-        </button>
-      </aside>
+      <Sidebar
+        activePage="dashboard"
+        onNavigate={onNavigate}
+        currentUser={currentUser}
+      />
 
       <main className="dashboard-main">
         <header className="dashboard-header">
@@ -224,16 +157,18 @@ function Dashboard({ onNavigate }) {
             className="dashboard-card analytics-card"
           >
             <div className="dashboard-value">
-              ₱{todaySales.toLocaleString("en-PH", {
+              ₱
+              {todaySales.toLocaleString("en-PH", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}
             </div>
+
             <p className="analytics-note">
               <span className="analytics-positive">
                 +{salesChange}%
-              </span>
-              {" "}compared with the previous day
+              </span>{" "}
+              compared with the previous day
             </p>
           </Card>
 
@@ -244,9 +179,11 @@ function Dashboard({ onNavigate }) {
             <div className="dashboard-value">
               {transactionCount}
             </div>
+
             <p className="analytics-note">
               Average order: ₱{averageOrder.toFixed(2)}
             </p>
+
             <button
               className="btn dashboard-history-button"
               onClick={() => onNavigate("transactions")}
@@ -263,9 +200,8 @@ function Dashboard({ onNavigate }) {
               <strong>Caramel Macchiato</strong>
               <span>18 items sold today</span>
             </div>
-            <p className="analytics-note">
-              Top-selling drink in this sample dataset
-            </p>
+
+            <p className="analytics-note">Top-selling drink</p>
           </Card>
 
           <Card
@@ -277,15 +213,18 @@ function Dashboard({ onNavigate }) {
                 <span className="chart-summary-label">
                   Total for the week
                 </span>
+
                 <strong>
-                  ₱{weeklySales
+                  ₱
+                  {weeklySales
                     .reduce((total, item) => total + item.sales, 0)
                     .toLocaleString("en-PH", {
                       minimumFractionDigits: 2,
                     })}
                 </strong>
               </div>
-              <span className="demo-data-label">Sample data</span>
+
+              <span className="demo-data-label"></span>
             </div>
 
             <SalesChart />
@@ -297,14 +236,19 @@ function Dashboard({ onNavigate }) {
           >
             <div className="top-products-list">
               {recentSales.map((product, index) => (
-                <div className="top-product-row" key={product.name}>
+                <div
+                  className="top-product-row"
+                  key={product.name}
+                >
                   <div className="top-product-rank">
                     {index + 1}
                   </div>
+
                   <div className="top-product-info">
                     <strong>{product.name}</strong>
                     <span>{product.quantity} items sold</span>
                   </div>
+
                   <strong className="top-product-sales">
                     ₱{product.sales.toLocaleString("en-PH")}
                   </strong>
@@ -321,10 +265,12 @@ function Dashboard({ onNavigate }) {
               <span>Weekly transactions</span>
               <strong>186</strong>
             </div>
+
             <div className="overview-row">
               <span>Average daily sales</span>
               <strong>
-                ₱{(
+                ₱
+                {(
                   weeklySales.reduce(
                     (total, item) => total + item.sales,
                     0
@@ -332,6 +278,7 @@ function Dashboard({ onNavigate }) {
                 ).toFixed(2)}
               </strong>
             </div>
+
             <div className="overview-row">
               <span>Highest sales day</span>
               <strong>Friday</strong>
@@ -339,40 +286,6 @@ function Dashboard({ onNavigate }) {
           </Card>
         </section>
       </main>
-
-      <nav className="bottom-navigation">
-        <button
-          className="bottom-nav-item active"
-          onClick={() => onNavigate("dashboard")}
-        >
-          <HomeIcon />
-          <span>Home</span>
-        </button>
-
-        <button
-          className="bottom-nav-item"
-          onClick={() => onNavigate("pos")}
-        >
-          <CartIcon />
-          <span>POS</span>
-        </button>
-
-        <button
-          className="bottom-nav-item"
-          onClick={() => onNavigate("products")}
-        >
-          <ProductsIcon />
-          <span>Products</span>
-        </button>
-
-        <button
-          className="bottom-nav-item"
-          onClick={() => onNavigate("reports")}
-        >
-          <StatsIcon />
-          <span>Reports</span>
-        </button>
-      </nav>
     </div>
   );
 }

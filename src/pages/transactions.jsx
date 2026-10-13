@@ -1,4 +1,6 @@
+
 import "./transactions.css";
+import Sidebar from "../components/Sidebar";
 
 const transactions = [
   {
@@ -44,143 +46,22 @@ const transactions = [
   },
 ];
 
-function HomeIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M3 10.5L12 3L21 10.5V20H14V14H10V20H3V10.5Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function CartIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M4 5H6L8 17H19L21 8H7"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="10" cy="20" r="1.5" fill="currentColor" />
-      <circle cx="17" cy="20" r="1.5" fill="currentColor" />
-    </svg>
-  );
-}
-
-function ProductsIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M4 7H20V20H4V7Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M3 4H21V7H3V4Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M9 12H15"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function StatsIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M5 20V12"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M12 20V6"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M19 20V3"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function Transactions({ onNavigate }) {
+function Transactions({ onNavigate, currentUser }) {
   return (
     <div className="transactions-page">
+      <Sidebar
+        activePage="transactions"
+        onNavigate={onNavigate}
+        currentUser={currentUser}
+      />
 
-      {/* DESKTOP SIDEBAR */}
-      <aside className="transactions-sidebar">
-        <div className="sidebar-brand">
-          <h2>Street Beans Café</h2>
-        </div>
-
-        <nav className="sidebar-nav">
-          <button
-            className="sidebar-nav-item"
-            onClick={() => onNavigate("dashboard")}
-          >
-            <HomeIcon />
-            <span>Home</span>
-          </button>
-
-          <button
-            className="sidebar-nav-item"
-            onClick={() => onNavigate("pos")}
-          >
-            <CartIcon />
-            <span>POS</span>
-          </button>
-
-          <button
-            className="sidebar-nav-item"
-            onClick={() => onNavigate("products")}
-          >
-            <ProductsIcon />
-            <span>Products</span>
-          </button>
-
-          <button
-            className="sidebar-nav-item active"
-            onClick={() => onNavigate("reports")}
-          >
-            <StatsIcon />
-            <span>Reports</span>
-          </button>
-        </nav>
-
-        <button
-          className="sidebar-logout"
-          onClick={() => onNavigate("login")}
-        >
-          Log Out
-        </button>
-      </aside>
-
-      {/* MAIN CONTENT */}
       <main className="transactions-main">
         <header className="transactions-header">
           <button
+            type="button"
             className="transactions-back-button"
             onClick={() => onNavigate("reports")}
+            aria-label="Back to reports"
           >
             ←
           </button>
@@ -216,49 +97,13 @@ function Transactions({ onNavigate }) {
 
                 <div className="transaction-total">
                   <span>Total</span>
-                  <strong>₱{transaction.total}</strong>
+                  <strong>₱{transaction.total.toFixed(2)}</strong>
                 </div>
               </article>
             ))}
           </div>
         </section>
       </main>
-
-      {/* MOBILE BOTTOM NAVIGATION */}
-      <nav className="bottom-navigation">
-        <button
-          className="bottom-nav-item"
-          onClick={() => onNavigate("dashboard")}
-        >
-          <HomeIcon />
-          <span>Home</span>
-        </button>
-
-        <button
-          className="bottom-nav-item"
-          onClick={() => onNavigate("pos")}
-        >
-          <CartIcon />
-          <span>POS</span>
-        </button>
-
-        <button
-          className="bottom-nav-item"
-          onClick={() => onNavigate("products")}
-        >
-          <ProductsIcon />
-          <span>Products</span>
-        </button>
-
-        <button
-          className="bottom-nav-item active"
-          onClick={() => onNavigate("reports")}
-        >
-          <StatsIcon />
-          <span>Reports</span>
-        </button>
-      </nav>
-
     </div>
   );
 }
