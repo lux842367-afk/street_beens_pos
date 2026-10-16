@@ -44,6 +44,10 @@ function createProduct(name, price, category) {
 function Products({ onNavigate, currentUser }) {
   const [catalog, setCatalog] = useState(() => loadCatalog());
 
+  // Only administrators can manage products and categories.
+  const isAdmin =
+    String(currentUser?.role || "").toLowerCase() === "admin";
+
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("90");
@@ -102,6 +106,8 @@ function Products({ onNavigate, currentUser }) {
   };
 
   const handleAddCategory = () => {
+    if (!isAdmin) return;
+
     const name = newCategoryName.trim();
 
     if (!name) {
@@ -132,6 +138,7 @@ function Products({ onNavigate, currentUser }) {
   };
 
   const handleOpenDeleteCategory = (category) => {
+    if (!isAdmin) return;
     setDeletingCategory(category);
   };
 
@@ -140,7 +147,7 @@ function Products({ onNavigate, currentUser }) {
   };
 
   const handleDeleteCategory = () => {
-    if (!deletingCategory) return;
+    if (!isAdmin || !deletingCategory) return;
 
     const categoryToDelete = deletingCategory;
 
@@ -180,6 +187,8 @@ function Products({ onNavigate, currentUser }) {
   const handleAddProduct = (event) => {
     event.preventDefault();
 
+    if (!isAdmin) return;
+
     const name = productName.trim();
     const price = Number(productPrice);
 
@@ -218,6 +227,8 @@ function Products({ onNavigate, currentUser }) {
   };
 
   const handleOpenEdit = (product) => {
+    if (!isAdmin) return;
+
     setEditingProduct({
       ...product,
       originalName: product.name,
@@ -242,7 +253,7 @@ function Products({ onNavigate, currentUser }) {
   const handleSaveEdit = (event) => {
     event.preventDefault();
 
-    if (!editingProduct) return;
+    if (!isAdmin || !editingProduct) return;
 
     const name = editingProduct.name.trim();
     const price = Number(editingProduct.price);
@@ -324,6 +335,7 @@ function Products({ onNavigate, currentUser }) {
     setEditingProduct(null);
   };
 
+  // Staff and administrators can both change product availability.
   const handleToggleAvailability = (product) => {
     updateCatalog((current) => ({
       ...current,
@@ -336,7 +348,7 @@ function Products({ onNavigate, currentUser }) {
   };
 
   const handleDeleteProduct = () => {
-    if (!deletingProduct) return;
+    if (!isAdmin || !deletingProduct) return;
 
     updateCatalog((current) => ({
       ...current,
@@ -349,6 +361,8 @@ function Products({ onNavigate, currentUser }) {
   };
 
   const updateOption = (field, index, property, value) => {
+    if (!isAdmin) return;
+
     setEditingProduct((current) => ({
       ...current,
       [field]: current[field].map((item, itemIndex) =>
@@ -358,6 +372,8 @@ function Products({ onNavigate, currentUser }) {
   };
 
   const addOption = (field) => {
+    if (!isAdmin) return;
+
     setEditingProduct((current) => ({
       ...current,
       [field]: [...current[field], { name: "", price: "0" }],
@@ -365,6 +381,8 @@ function Products({ onNavigate, currentUser }) {
   };
 
   const removeOption = (field, index) => {
+    if (!isAdmin) return;
+
     setEditingProduct((current) => ({
       ...current,
       [field]: current[field].filter(
@@ -490,15 +508,17 @@ function Products({ onNavigate, currentUser }) {
                   <div className="category-heading-row">
                     <h2>{category}</h2>
 
-                    <button
-                      type="button"
-                      className="delete-category-button"
-                      onClick={() => handleOpenDeleteCategory(category)}
-                      aria-label={`Delete ${category} category and all its products`}
-                    >
-                      <DeleteIcon />
-                      <span>Delete Category</span>
-                    </button>
+                    {isAdmin && (
+                      <button
+                        type="button"
+                        className="delete-category-button"
+                        onClick={() => handleOpenDeleteCategory(category)}
+                        aria-label={`Delete ${category} category and all its products`}
+                      >
+                        <DeleteIcon />
+                        <span>Delete Category</span>
+                      </button>
+                    )}
                   </div>
 
                   {categoryProducts.length > 0 ? (
@@ -530,23 +550,27 @@ function Products({ onNavigate, currentUser }) {
                           </div>
 
                           <div className="product-actions">
-                            <button
-                              type="button"
-                              className="edit-product-button"
-                              onClick={() => handleOpenEdit(product)}
-                              aria-label={`Edit ${product.name}`}
-                            >
-                              ✎
-                            </button>
+                            {isAdmin && (
+                              <>
+                                <button
+                                  type="button"
+                                  className="edit-product-button"
+                                  onClick={() => handleOpenEdit(product)}
+                                  aria-label={`Edit ${product.name}`}
+                                >
+                                  ✎
+                                </button>
 
-                            <button
-                              type="button"
-                              className="delete-product-button"
-                              onClick={() => setDeletingProduct(product)}
-                              aria-label={`Delete ${product.name}`}
-                            >
-                              <DeleteIcon />
-                            </button>
+                                <button
+                                  type="button"
+                                  className="delete-product-button"
+                                  onClick={() => setDeletingProduct(product)}
+                                  aria-label={`Delete ${product.name}`}
+                                >
+                                  <DeleteIcon />
+                                </button>
+                              </>
+                            )}
 
                             <button
                               type="button"
@@ -573,22 +597,24 @@ function Products({ onNavigate, currentUser }) {
             })}
         </section>
 
-        <button
-          type="button"
-          className="add-product-button"
-          onClick={() => {
-            setProductCategory(categories[0] || "");
-            setShowNewCategoryInput(false);
-            setNewCategoryName("");
-            setShowAddProduct(true);
-          }}
-        >
-          <span>+</span>
-          Add Product
-        </button>
+        {isAdmin && (
+          <button
+            type="button"
+            className="add-product-button"
+            onClick={() => {
+              setProductCategory(categories[0] || "");
+              setShowNewCategoryInput(false);
+              setNewCategoryName("");
+              setShowAddProduct(true);
+            }}
+          >
+            <span>+</span>
+            Add Product
+          </button>
+        )}
       </main>
 
-      {showAddProduct && (
+      {isAdmin && showAddProduct && (
         <div className="add-product-overlay">
           <div className="add-product-modal">
             <h2>Add Product</h2>
@@ -621,7 +647,7 @@ function Products({ onNavigate, currentUser }) {
               </div>
 
               <div className="add-product-field category-quick-management">
-                <label>Category</label>
+                <label htmlFor="new-product-category">Category</label>
 
                 <div className="category-select-row">
                   <select
@@ -711,7 +737,7 @@ function Products({ onNavigate, currentUser }) {
         </div>
       )}
 
-      {editingProduct && (
+      {isAdmin && editingProduct && (
         <div className="add-product-overlay">
           <div className="add-product-modal product-edit-modal">
             <h2>Edit Product</h2>
@@ -849,7 +875,7 @@ function Products({ onNavigate, currentUser }) {
         </div>
       )}
 
-      {deletingProduct && (
+      {isAdmin && deletingProduct && (
         <div className="add-product-overlay">
           <div className="add-product-modal delete-confirmation-modal">
             <h2>Are you sure?</h2>
@@ -880,7 +906,7 @@ function Products({ onNavigate, currentUser }) {
         </div>
       )}
 
-      {deletingCategory && (
+      {isAdmin && deletingCategory && (
         <div className="add-product-overlay">
           <div className="add-product-modal delete-confirmation-modal">
             <h2>Delete Category?</h2>
